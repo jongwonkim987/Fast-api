@@ -24,12 +24,32 @@ dev = [
     "coverage (>=7.13.4,<8.0.0)",
     "pytest-asyncio (>=1.3.0,<2.0.0)"
 ]
-[too.coverage.run]
-omit =["*/test_*.py"]
+[tool.poetry]
+name = "pythonproject"
+version = "0.1.0"
+description = ""
+authors = ["jongwonkim987 <jongwonkim987@gmail.com>"]
 
-[too.pytest.ini_options]
+[tool.poetry.dependencies]
+python = ">=3.12,<4.0"
+fastapi = "^0.128.8"
+uvicorn = "^0.40.0"
+black = "^26.1.0"
+ruff = "^0.15.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^9.0.2"
+coverage = "^7.13.4"
+pytest-asyncio = "^1.3.0"
+mypy = "^1.0.0"
+
+[tool.coverage.run]
+omit = ["*/test_*.py"]
+
+[tool.pytest.ini_options]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "session"
 
-[tool.peotry.dependencies]
-python = ">=3.12,<4.0"
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
