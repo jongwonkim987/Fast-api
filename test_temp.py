@@ -1,5 +1,4 @@
-def add(a: int, b: int) -> int:
-    return a + b
+from temp import add
 
 
 def test_add() -> None:
