@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+
+jobs:
+  static-analysis:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/pypoetry
+          key: poetry-${{ hashFiles('poetry.lock') }}
+
+      - run: curl -sSL https://install.python-poetry.org | python3 -
+      - run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - run: poetry install --no-root
+
+      - run: poetry run black . --check
+      - run: poetry run ruff check .
+      - run: poetry run mypy .
+
+  test:
+    needs: static-analysis
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: curl -sSL https://install.python-poetry.org | python3 -
+      - run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - run: poetry install --no-root
+
+      - run: poetry run pytest --cov
